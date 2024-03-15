@@ -60,10 +60,12 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 mongoose
-    .connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.cwvsk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`)
+    .connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.cwvsk.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority&appName=Cluster0`)
     .then(() => {
-        app.listen(3000);
+        console.log('Mongo DB connected.');
     })
     .catch(err => {
         console.error(err);
     });
+    
+app.listen(3000);
