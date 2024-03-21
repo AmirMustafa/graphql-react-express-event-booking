@@ -4,7 +4,7 @@ const User = require('../../models/user');
 const Booking = require('../../models/booking');
 
 
-// This functions are basically for drilling i.e. getting collection details based on their id
+// Below functions are basically for drilling i.e. getting collection details based on their id
 const events = async eventIds => {
     try {
         const events = await Event.find({ _id: { $in: eventIds } });
@@ -138,6 +138,19 @@ module.exports = {
                 createdAt: new Date(result._doc.createdAt).toISOString(),
                 updatedAt: new Date(result._doc.updatedAt).toISOString()
             }
+        } catch (err) {
+            throw err;
+        }
+    },
+    cancelBooking: async (args) => {
+        try {
+            const booking = await Booking.findById(args.bookingId).populate('event');
+            const event = {
+                ...booking.event._doc,
+                creator: user.bind(this, booking._doc.event.creator)
+            }
+            await Booking.deleteOne({ _id: args.bookingId });
+            return event;
         } catch (err) {
             throw err;
         }
