@@ -10,6 +10,16 @@ const transformEvent = event => {
     };
 }
 
+const transformBooking = booking => {
+    return {
+        ...booking._doc,
+        user: user.bind(this, booking._doc.user),
+        event: singleEvent.bind(this, booking._doc.event),
+        createdAt: dateToString(booking._doc.createdAt),
+        updatedAt: dateToString(booking._doc.updatedAt)
+    }
+}
+
 // Below functions are basically for drilling i.e. getting collection details based on their id
 const events = async eventIds => {
     try {
@@ -46,3 +56,5 @@ const user = async userId => {
 exports.events = events;
 exports.singleEvent = singleEvent;
 exports.user = user;
+exports.transformEvent = transformEvent;
+exports.transformBooking = transformBooking;
