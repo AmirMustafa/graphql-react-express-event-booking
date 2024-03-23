@@ -12,6 +12,16 @@ const transformEvent = event => {
     };
 }
 
+const transformBooking = booking => {
+    return {
+        ...booking._doc,
+        user: user.bind(this, booking._doc.user),
+        event: singleEvent.bind(this, booking._doc.event),
+        createdAt: dateToString(booking._doc.createdAt),
+        updatedAt: dateToString(booking._doc.updatedAt)
+    }
+}
+
 
 // Below functions are basically for drilling i.e. getting collection details based on their id
 const events = async eventIds => {
@@ -62,13 +72,7 @@ module.exports = {
             const bookings = await Booking.find();
 
             return bookings.map(booking => {
-                return {
-                    ...booking._doc,
-                    user: user.bind(this, booking._doc.user),
-                    event: singleEvent.bind(this, booking._doc.event),
-                    createdAt: dateToString(booking._doc.createdAt),
-                    updatedAt: dateToString(booking._doc.updatedAt)
-                }
+                return transformBooking(booking);
             });
         } catch (err) {
             throw err;
@@ -126,13 +130,7 @@ module.exports = {
             });
             const result = await booking.save();
 
-            return {
-                ...result._doc,
-                user: user.bind(this, booking._doc.user),
-                event: singleEvent.bind(this, booking._doc.event),
-                createdAt: dateToString(result._doc.createdAt),
-                updatedAt: dateToString(result._doc.updatedAt)
-            }
+            return transformBooking(result);
         } catch (err) {
             throw err;
         }
