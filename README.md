@@ -1,4 +1,4 @@
-#Creating Event Booking System using GraphQL APIs
+# Creating Event Booking System using GraphQL APIs
 
 <img width="1512" alt="Screenshot 2024-03-24 at 5 24 37 AM" src="https://github.com/AmirMustafa/graphql-react-express-event-booking/assets/15896579/6dbe2fb3-467d-4c13-9f7e-eb02a295bd86">
 
