@@ -1,23 +1,18 @@
-// App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './pages/Auth';
 import BookingsPage from './pages/Bookings';
 import EventsPage from './pages/Events';
 import NotFound from './pages/NotFound';
+import MainNavigation from './components/Navigation/MainNavigation';
+
+import './App.css';
 
 const App = () => {
   return (
     <Router>
-      <div>
-        {/* <nav>
-          <ul>
-            <li>
-              <a href="/auth">Auth</a>
-            </li>
-          </ul>
-        </nav> */}
-
+      <MainNavigation />
+      <div className="main-content">
         <Routes>
           {/* Redirect from root to /about */}
           <Route path="/" element={<Navigate to="/auth" />} />
