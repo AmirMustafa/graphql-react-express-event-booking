@@ -23,6 +23,27 @@ const createUser = async (email, password) => {
     }
 }
 
+const loginUser = async (email, password) => {
+    try {
+        const query = `
+            query {
+                login(email: "${email}", password: "${password}") {
+                    userId
+                    token
+                    tokenExpiration
+                }
+            }
+        `;
+
+        const response = await callGraphQLAPI(query);
+        return response.data.data.login;
+
+    } catch (err) {
+        console.error('createUser', err);
+        throw err;
+    }
+}
+
 const callGraphQLAPI = async (queryOrMutation) => {
     const response = await axios.post(backendServer, JSON.stringify({ query: queryOrMutation }), {
         headers: {
@@ -44,5 +65,6 @@ const callGraphQLAPI = async (queryOrMutation) => {
 }
 
 export {
-    createUser
+    createUser,
+    loginUser
 }

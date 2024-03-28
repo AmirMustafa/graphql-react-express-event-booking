@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Auth.css';
 
-import { createUser } from '../store/user-store';
+import { createUser, loginUser } from '../store/user-store';
 
 const Auth = () => {
     const [email, setEmail] = useState('');
@@ -29,8 +29,15 @@ const Auth = () => {
             }
 
             // Calling GraphQL API
-            const userData = await createUser(email, password);
-            console.log('User created: ', userData);
+
+            if (isLogin) {
+                const loginData = await loginUser(email, password);
+                console.log('Login successful', loginData);
+            } else {
+                const userData = await createUser(email, password);
+                console.log('User created: ', userData);
+            }
+
 
         } catch (err) {
             console.error('Error creating user: ', err.message);
@@ -40,6 +47,7 @@ const Auth = () => {
     return (
         <div>
             <form className='auth-form' onSubmit={handleSubmit}>
+                <h4>{isLogin ? "Login" : "Signup"}</h4><br />
                 <div className='form-control'>
                     <label htmlFor='email'>Email: </label>
                     <input type="email" id="email" onChange={(e) => setEmail(e.target.value)} />
