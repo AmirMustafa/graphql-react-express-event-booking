@@ -6,6 +6,11 @@ import { createUser } from '../store/user-store';
 const Auth = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLogin, setIsLogin] = useState(true);
+
+    const switchHandler = () => {
+        setIsLogin(!isLogin);
+    }
 
     const validateData = (email, password) => {
         if (email.trim().length === 0 || password.trim().length === 0) {
@@ -17,7 +22,6 @@ const Auth = () => {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
-            console.log('handle submit data ===> ', { email, password });
 
             const isValid = validateData(email, password);
             if (!isValid.res) {
@@ -46,7 +50,7 @@ const Auth = () => {
                 </div>
                 <div className='form-actions'>
                     <button type="submit">Submit</button>
-                    <button type="button">Switch to Signup</button>
+                    <button type="button" onClick={switchHandler}>Switch to {isLogin ? 'Signup' : 'Login'}</button>
                 </div>
             </form>
         </div>
