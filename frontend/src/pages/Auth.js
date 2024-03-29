@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './Auth.css';
+import AuthContext from '../context/auth-context';
 
 import { createUser, loginUser } from '../store/user-store';
 
 const Auth = () => {
+    const authContext = useContext(AuthContext);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLogin, setIsLogin] = useState(true);
@@ -33,6 +36,7 @@ const Auth = () => {
             if (isLogin) {
                 const loginData = await loginUser(email, password);
                 console.log('Login successful', loginData);
+                authContext.login(loginData.token, loginData.userId, loginData.tokenExpiration);
             } else {
                 const userData = await createUser(email, password);
                 console.log('User created: ', userData);
