@@ -30,10 +30,13 @@ const App = () => {
         <div className="main-content">
           <Routes>
             {/* Redirect from root to /about */}
-            <Route path="/" element={<Navigate to="/auth" />} />
+            {!token && <Route path="/" element={<Navigate to="/auth" />} />}
+            {token && <Route path="/" element={<Navigate to="/events" />} />}
+            {token && <Route path="/auth" element={<Navigate to="/events" />} />}
+
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/events" element={<EventsPage />} />
-            <Route path="/bookings" element={<BookingsPage />} />
+            {token && <Route path="/bookings" element={<BookingsPage />} />}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
