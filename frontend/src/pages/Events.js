@@ -1,6 +1,8 @@
 import React, { useState, useRef, Fragment } from 'react';
 import Modal from '../components/Navigation/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import './Events.css';
 
 const Events = () => {
@@ -17,9 +19,13 @@ const Events = () => {
             price.trim().length === 0 ||
             description.trim().length === 0 ||
             date.trim().length === 0) {
-            return { res: false, msg: "Email or password cannot be empty!" }
+            toast.error("Fields Title, Price, Date, and Description cannot be empty!", {
+                position: "top-right",
+            });
+
+            return { res: false, errmsg: "Fields Title, Price, Date, and Description cannot be empty!" }
         }
-        return { res: true, msg: null }
+        return { res: true, errmsg: null }
     }
 
     const startCreateHandler = () => {
@@ -78,6 +84,7 @@ const Events = () => {
                 <p>Create your own event!</p>
                 <button className='btn' onClick={startCreateHandler}>Create Event</button>
             </div>
+            <ToastContainer />
         </Fragment>
     );
 }
