@@ -4,9 +4,9 @@ const { dateToString } = require('../../helpers/date');
 
 const transformEvent = event => {
     return {
-        ...event._doc,
-        date: dateToString(event._doc.date),
-        creator: user.bind(this, event._doc.creator)
+        ...event?._doc,
+        date: dateToString(event?._doc?.date),
+        creator: user.bind(this, event?._doc?.creator)
     };
 }
 
@@ -45,8 +45,8 @@ const user = async userId => {
     try {
         const user = await User.findById(userId);
         return {
-            ...user._doc,
-            createdEvents: events.bind(this, user._doc.createdEvents)
+            ...user?._doc,
+            createdEvents: events.bind(this, user?._doc.createdEvents)
         };
     } catch (err) {
         throw err;

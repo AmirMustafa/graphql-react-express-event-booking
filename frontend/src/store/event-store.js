@@ -3,7 +3,6 @@ const backendServer = 'http://localhost:8000/graphql';
 
 const createEvent = async ({ title, price, description, date }, token) => {
     try {
-        console.log('createEvent store token: ', token);
         const mutation = `
             mutation {
                 createEvent(eventInput: { title: "${title}", price: ${price}, description: "${description}", date: "${date}" }) {
@@ -21,6 +20,30 @@ const createEvent = async ({ title, price, description, date }, token) => {
 
         const response = await callGraphQLAPI(mutation, token);
         return response.data;
+
+    } catch (err) {
+        console.log('Error: createEvent ', err);
+        return err;
+    }
+
+}
+
+const fetchEvents = async (token) => {
+    try {
+        const query = `
+            query {
+                events {
+                    _id
+                    title
+                    description
+                    date
+                    price
+                }
+            }
+        `;
+
+        const response = await callGraphQLAPI(query, token);
+        return response.data.data;
 
     } catch (err) {
         console.log('Error: createEvent ', err);
@@ -51,5 +74,6 @@ const callGraphQLAPI = async (queryOrMutation, token) => {
 }
 
 export {
-    createEvent
+    createEvent,
+    fetchEvents
 }

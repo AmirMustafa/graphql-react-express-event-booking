@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, Fragment } from 'react';
+import React, { useState, useEffect, useRef, useContext, Fragment } from 'react';
 import AuthContext from "../context/auth-context";
 import Modal from '../components/Navigation/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
@@ -6,16 +6,26 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import './Events.css';
 
-import { createEvent } from "../store/event-store";
+import { createEvent, fetchEvents } from "../store/event-store";
 
 const Events = () => {
     const authContext = useContext(AuthContext);
     const [creating, setCreating] = useState(false);
+    const [events, setEvents] = useState([]);
 
     const titleRef = useRef(null);
     const priceRef = useRef(null);
     const descriptionRef = useRef(null);
     const dateRef = useRef(null);
+
+    useEffect(() => {
+        getEvents();
+    }, []);
+
+    const getEvents = async () => {
+        const data = await fetchEvents(authContext.token);
+        setEvents(data.events);
+    }
 
     const validateData = (title, price, description, date) => {
         if (
@@ -70,8 +80,10 @@ const Events = () => {
                 position: "top-right",
             });
         }
-
     }
+
+    const eventsList = () => events.map((event) => <li key={event._id} className='events__list-item'>{event.title}</li>)
+
     return (
         <Fragment>
             {creating && <Backdrop />}
@@ -101,8 +113,9 @@ const Events = () => {
             </div>
 
             <ul className='events__list'>
-                <li className='events__list-item'>Test 1</li>
-                <li className='events__list-item'>Test 2</li>
+                {
+                    eventsList()
+                }
             </ul>
 
             <ToastContainer />
