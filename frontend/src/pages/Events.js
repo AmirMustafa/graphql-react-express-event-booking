@@ -99,6 +99,12 @@ const Events = () => {
                 <p>Create your own event!</p>
                 <button className='btn' onClick={startCreateHandler}>Create Event</button>
             </div>
+
+            <ul className='events__list'>
+                <li className='events__list-item'>Test 1</li>
+                <li className='events__list-item'>Test 2</li>
+            </ul>
+
             <ToastContainer />
         </Fragment>
     );
