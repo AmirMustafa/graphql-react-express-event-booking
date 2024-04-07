@@ -1,11 +1,15 @@
-import React, { useState, useRef, Fragment } from 'react';
+import React, { useState, useRef, useContext, Fragment } from 'react';
+import AuthContext from "../context/auth-context";
 import Modal from '../components/Navigation/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import './Events.css';
 
+import { createEvent } from "../store/event-store";
+
 const Events = () => {
+    const authContext = useContext(AuthContext);
     const [creating, setCreating] = useState(false);
 
     const titleRef = useRef(null);
@@ -35,14 +39,14 @@ const Events = () => {
     const modalCancelHandler = () => {
         setCreating(false);
     }
-    const modalConfirmHandler = () => {
+    const modalConfirmHandler = async () => {
         setCreating(false);
         const title = titleRef.current.value;
         const price = priceRef.current.value;
         const description = descriptionRef.current.value;
         const date = dateRef.current.value;
 
-        const event = { title, price, description, date }
+        const event = { title, price: +price, description, date }
 
         // Clear form fields
         titleRef.current.value = '';
@@ -55,7 +59,18 @@ const Events = () => {
             return;
         }
 
-        console.log("event ===> ", event);
+        // Calling GraphQL API
+        const newEvent = await createEvent(event, authContext.token);
+        if (newEvent && newEvent.hasOwnProperty('data')) {
+            toast.success(`${newEvent.data.createEvent.title} event created successfully!`, {
+                position: "top-right",
+            });
+        } else {
+            toast.error(`Error creating event!`, {
+                position: "top-right",
+            });
+        }
+
     }
     return (
         <Fragment>
@@ -72,7 +87,7 @@ const Events = () => {
                     </div>
                     <div className='form-control'>
                         <label htmlFor='date'>Date</label>
-                        <input type="date" id="date" ref={dateRef} />
+                        <input type="datetime-local" id="date" ref={dateRef} />
                     </div>
                     <div className='form-control'>
                         <label htmlFor='description'>Description</label>

@@ -38,7 +38,6 @@ const Auth = () => {
             }
 
             // Calling GraphQL API
-
             if (isLogin) {
                 const loginData = await loginUser(email, password);
                 console.log('Login successful', loginData);
