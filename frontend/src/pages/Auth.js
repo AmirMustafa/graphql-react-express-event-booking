@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
-import './Auth.css';
 import AuthContext from '../context/auth-context';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import './Auth.css';
 
 import { createUser, loginUser } from '../store/user-store';
 
@@ -17,9 +19,9 @@ const Auth = () => {
 
     const validateData = (email, password) => {
         if (email.trim().length === 0 || password.trim().length === 0) {
-            return { res: false, msg: "Email or password cannot be empty!" }
+            return { res: false, errmsg: "Email or password cannot be empty!" }
         }
-        return { res: true, msg: null }
+        return { res: true, errmsg: null }
     }
 
     const handleSubmit = async (e) => {
@@ -27,12 +29,15 @@ const Auth = () => {
             e.preventDefault();
 
             const isValid = validateData(email, password);
-            if (!isValid.res) {
+
+            if (isValid.errmsg !== null) {
+                toast.error("Email or password cannot be empty!", {
+                    position: "top-right",
+                });
                 return;
             }
 
             // Calling GraphQL API
-
             if (isLogin) {
                 const loginData = await loginUser(email, password);
                 console.log('Login successful', loginData);
@@ -44,6 +49,9 @@ const Auth = () => {
 
 
         } catch (err) {
+            toast.error("Error creating user!", {
+                position: "top-right",
+            });
             console.error('Error creating user: ', err.message);
         }
     }
@@ -65,6 +73,7 @@ const Auth = () => {
                     <button type="button" onClick={switchHandler}>Switch to {isLogin ? 'Signup' : 'Login'}</button>
                 </div>
             </form>
+            <ToastContainer />
         </div>
     );
 }
