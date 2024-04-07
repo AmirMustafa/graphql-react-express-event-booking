@@ -75,6 +75,7 @@ const Events = () => {
             toast.success(`${newEvent.data.createEvent.title} event created successfully!`, {
                 position: "top-right",
             });
+            getEvents();
         } else {
             toast.error(`Error creating event!`, {
                 position: "top-right",
