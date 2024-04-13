@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext, Fragment } from 'react'
 import AuthContext from "../context/auth-context";
 import Modal from '../components/Navigation/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
+import EventList from '../components/Events/EventList/EventList';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import './Events.css';
@@ -83,8 +84,6 @@ const Events = () => {
         }
     }
 
-    const eventsList = () => events.map((event) => <li key={event._id} className='events__list-item'>{event.title}</li>)
-
     return (
         <Fragment>
             {creating && <Backdrop />}
@@ -113,11 +112,7 @@ const Events = () => {
                 <button className='btn' onClick={startCreateHandler}>Create Event</button>
             </div>
 
-            <ul className='events__list'>
-                {
-                    eventsList()
-                }
-            </ul>
+            <EventList events={events} />
 
             <ToastContainer />
         </Fragment>
