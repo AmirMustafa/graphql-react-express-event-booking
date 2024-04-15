@@ -107,12 +107,15 @@ const Events = () => {
                     </div>
                 </form>
             </Modal>}
-            <div className='events-control'>
+            {authContext?.userId && <div className='events-control'>
                 <p>Create your own event!</p>
                 <button className='btn' onClick={startCreateHandler}>Create Event</button>
-            </div>
+            </div>}
 
-            <EventList events={events} />
+            <EventList
+                events={events}
+                authUserId={authContext.userId}
+            />
 
             <ToastContainer />
         </Fragment>
