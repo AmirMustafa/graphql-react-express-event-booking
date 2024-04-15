@@ -8,8 +8,10 @@ const eventItem = props => (
             <h2>{`$999.99`}</h2>
         </div>
         <div>
-            <button className='btn'>View Details</button>
-            {props.authUserId === props.creator._id && <p>Your the owner</p>}
+            {props.authUserId === props.creator._id
+                ? <p>Your the owner</p>
+                : <button className='btn'>View Details</button>
+            }
         </div>
     </li>
 );
