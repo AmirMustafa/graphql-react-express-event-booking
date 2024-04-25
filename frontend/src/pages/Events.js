@@ -3,6 +3,7 @@ import AuthContext from "../context/auth-context";
 import Modal from '../components/Navigation/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
 import EventList from '../components/Events/EventList/EventList';
+import Spinner from '../components/Spinner/Spinner';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import './Events.css';
@@ -117,7 +118,7 @@ const Events = () => {
 
 
             {isLoading
-                ? 'Loading...'
+                ? <Spinner />
                 : <EventList
                     events={events}
                     authUserId={authContext.userId}
