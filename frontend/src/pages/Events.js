@@ -13,6 +13,7 @@ const Events = () => {
     const authContext = useContext(AuthContext);
     const [creating, setCreating] = useState(false);
     const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const titleRef = useRef(null);
     const priceRef = useRef(null);
@@ -24,8 +25,10 @@ const Events = () => {
     }, []);
 
     const getEvents = async () => {
+        setIsLoading(true);
         const data = await fetchEvents(authContext.token);
         setEvents(data.events);
+        setIsLoading(false);
     }
 
     const validateData = (title, price, description, date) => {
@@ -112,10 +115,14 @@ const Events = () => {
                 <button className='btn' onClick={startCreateHandler}>Create Event</button>
             </div>}
 
-            <EventList
-                events={events}
-                authUserId={authContext.userId}
-            />
+
+            {isLoading
+                ? 'Loading...'
+                : <EventList
+                    events={events}
+                    authUserId={authContext.userId}
+                />
+            }
 
             <ToastContainer />
         </Fragment>
