@@ -38,6 +38,10 @@ const fetchEvents = async (token) => {
                     description
                     date
                     price
+                    creator {
+                        _id
+                        email
+                    }
                 }
             }
         `;
