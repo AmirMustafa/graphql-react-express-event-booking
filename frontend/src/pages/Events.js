@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Events.css";
 
 import { createEvent, fetchEvents } from "../store/event-store";
+import { bookEvent } from "../store/booking-store";
 
 const Events = () => {
   const authContext = useContext(AuthContext);
@@ -112,8 +113,18 @@ const Events = () => {
     return { selectedEvents };
   };
 
-  const bookEventHandler = () => {
-    // DO BOOKING ACTION
+  const bookEventHandler = async (eventId) => {
+    // Calling GraphQL API
+    const bookedEvent = await bookEvent(eventId, authContext.token);
+    if (bookedEvent && bookedEvent.hasOwnProperty("data")) {
+      toast.success(
+        `${bookedEvent?.data?.bookEvent?.event?.title} event booked successfully!`,
+        {
+          position: "top-right",
+        }
+      );
+      setSelectedEvent(null);
+    }
   };
 
   return (
@@ -159,7 +170,7 @@ const Events = () => {
           canCancel
           canConfirm
           onCancel={modalCancelHandler}
-          onConfirm={bookEventHandler}
+          onConfirm={() => bookEventHandler(selectedEvent._id)}
           confirmText={"Book"}
         >
           <h1>{selectedEvent.title}</h1>
