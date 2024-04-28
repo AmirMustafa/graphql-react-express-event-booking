@@ -30,9 +30,12 @@ const Bookings = () => {
       // Fetch Booking GraphQL API
       getBookings();
       setIsLoading(false);
-      toast.success(`Booking cancelled successfully!`, {
-        position: "top-right",
-      });
+      toast.success(
+        `${data.cancelBooking.title} booking cancelled successfully!`,
+        {
+          position: "top-right",
+        }
+      );
     }
     setIsLoading(false);
   };

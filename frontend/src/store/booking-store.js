@@ -53,15 +53,13 @@ const cancelBooking = async (bookingId, token) => {
     const mutation = `
             mutation {
                 cancelBooking(bookingId: "${bookingId}") {
-                    creator {
-                        email
-                    }
-                    date
+                    _id
+                    title
                 }
             }
         `;
     const response = await callGraphQLAPI(mutation, token);
-    return response.data;
+    return response.data.data;
   } catch (err) {
     console.log("Error: cancelBooking ", err);
     return err;
