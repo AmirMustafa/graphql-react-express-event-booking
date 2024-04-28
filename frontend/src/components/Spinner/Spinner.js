@@ -1,8 +1,13 @@
 import React from "react";
-import './Spinner.css';
+import "./Spinner.css";
 
-const Spinner = () => <div className="spinner">
-    <div class="lds-ripple"><div></div><div></div></div>
-</div>
+const Spinner = () => (
+  <div className="spinner">
+    <div className="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+);
 
 export default Spinner;
