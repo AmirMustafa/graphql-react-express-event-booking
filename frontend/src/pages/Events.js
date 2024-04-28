@@ -114,6 +114,11 @@ const Events = () => {
   };
 
   const bookEventHandler = async (eventId) => {
+    if (!authContext.token) {
+      setSelectedEvent(null); // close Modal
+      return;
+    }
+
     // Calling GraphQL API
     const bookedEvent = await bookEvent(eventId, authContext.token);
     if (bookedEvent && bookedEvent.hasOwnProperty("data")) {
@@ -171,7 +176,7 @@ const Events = () => {
           canConfirm
           onCancel={modalCancelHandler}
           onConfirm={() => bookEventHandler(selectedEvent._id)}
-          confirmText={"Book"}
+          confirmText={authContext.token ? "Book" : "Confirm"}
         >
           <h1>{selectedEvent.title}</h1>
           <h2>
