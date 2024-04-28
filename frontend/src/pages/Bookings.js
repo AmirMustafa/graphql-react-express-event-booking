@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../context/auth-context";
+import Spinner from "../components/Spinner/Spinner";
 import { fetchBookings } from "../store/booking-store";
 
 const Bookings = () => {
@@ -9,7 +10,7 @@ const Bookings = () => {
 
   useEffect(() => {
     getBookings();
-  }, [bookings]);
+  }, []);
 
   const getBookings = async () => {
     setIsLoading(true);
@@ -20,14 +21,18 @@ const Bookings = () => {
 
   return (
     <div>
-      <ul>
-        {bookings?.map((booking) => (
-          <li key={booking._id}>
-            {booking?.event.title} -
-            {new Date(booking?.createdAt).toLocaleDateString()}
-          </li>
-        ))}
-      </ul>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <ul>
+          {bookings?.map((booking) => (
+            <li key={booking._id}>
+              {booking?.event.title} -
+              {new Date(booking?.createdAt).toLocaleDateString()}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
