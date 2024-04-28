@@ -1,10 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import AuthContext from "../context/auth-context";
+import { fetchBookings } from "../store/booking-store";
 
 const Bookings = () => {
-    return (
-        <div>
-            <h2>The Bookings Page</h2>
-        </div>
-    );
-}
+  const authContext = useContext(AuthContext);
+  const [bookings, setBookings] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    getBookings();
+  }, [bookings]);
+
+  const getBookings = async () => {
+    setIsLoading(true);
+    const data = await fetchBookings(authContext.token);
+    setBookings(data.bookings);
+    setIsLoading(false);
+  };
+
+  return (
+    <div>
+      <ul>
+        {bookings?.map((booking) => (
+          <li key={booking._id}>
+            {booking?.event.title} -
+            {new Date(booking?.createdAt).toLocaleDateString()}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 export default Bookings;

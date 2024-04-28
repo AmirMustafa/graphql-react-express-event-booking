@@ -24,6 +24,30 @@ const bookEvent = async (eventId, token) => {
   }
 };
 
+const fetchBookings = async (token) => {
+  try {
+    const query = `
+        query {
+            bookings {
+                _id
+                createdAt
+                event {
+                 _id
+                 title
+                 date
+                }
+            }
+        }
+    `;
+
+    const response = await callGraphQLAPI(query, token);
+    return response.data.data;
+  } catch (err) {
+    console.log("Error: createEvent ", err);
+    return err;
+  }
+};
+
 const callGraphQLAPI = async (queryOrMutation, token) => {
   const response = await axios.post(
     backendServer,
@@ -49,4 +73,4 @@ const callGraphQLAPI = async (queryOrMutation, token) => {
   return response;
 };
 
-export { bookEvent };
+export { bookEvent, fetchBookings };
