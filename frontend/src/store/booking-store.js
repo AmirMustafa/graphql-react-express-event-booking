@@ -48,6 +48,26 @@ const fetchBookings = async (token) => {
   }
 };
 
+const cancelBooking = async (bookingId, token) => {
+  try {
+    const mutation = `
+            mutation {
+                cancelBooking(bookingId: "${bookingId}") {
+                    creator {
+                        email
+                    }
+                    date
+                }
+            }
+        `;
+    const response = await callGraphQLAPI(mutation, token);
+    return response.data;
+  } catch (err) {
+    console.log("Error: cancelBooking ", err);
+    return err;
+  }
+};
+
 const callGraphQLAPI = async (queryOrMutation, token) => {
   const response = await axios.post(
     backendServer,
@@ -73,4 +93,4 @@ const callGraphQLAPI = async (queryOrMutation, token) => {
   return response;
 };
 
-export { bookEvent, fetchBookings };
+export { bookEvent, fetchBookings, cancelBooking };
