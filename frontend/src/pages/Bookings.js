@@ -3,6 +3,7 @@ import AuthContext from "../context/auth-context";
 import Spinner from "../components/Spinner/Spinner";
 import BookingList from "../components/Bookings/BookingList/BookingList";
 import BookingsChart from "../components/Bookings/BookingsChart/BookingsChart";
+import BookingsControls from "../components/Bookings/BookingsControls/BookingsControls";
 import { toast, ToastContainer } from "react-toastify";
 import { fetchBookings, cancelBooking } from "../store/booking-store";
 
@@ -55,10 +56,10 @@ const Bookings = () => {
   if (!isLoading) {
     content = (
       <Fragment>
-        <div>
-          <button onClick={() => changeOutputHandler("list")}>List</button>
-          <button onClick={() => changeOutputHandler("chart")}>Charts</button>
-        </div>
+        <BookingsControls
+          activeOutputType={outputType}
+          changeOutputHandler={changeOutputHandler}
+        />
         <div>
           {outputType === "list" ? (
             <BookingList bookings={bookings} onDelete={deleteBookingHandler} />
