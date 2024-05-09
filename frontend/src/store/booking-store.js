@@ -35,6 +35,7 @@ const fetchBookings = async (token) => {
                  _id
                  title
                  date
+                 price
                 }
             }
         }
