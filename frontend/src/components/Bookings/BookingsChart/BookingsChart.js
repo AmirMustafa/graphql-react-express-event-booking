@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import Chart from "chart.js";
 import "./BookingsChart.css";
 
 const BOOKINGS_BUCKETS = {
@@ -16,24 +17,58 @@ const BOOKINGS_BUCKETS = {
   },
 };
 
-const bookingsChart = (props) => {
-  const output = {};
-  for (const bucket in BOOKINGS_BUCKETS) {
-    const filteredBookingsCount = props.bookings.reduce((prev, current) => {
-      if (
-        current.event.price > BOOKINGS_BUCKETS[bucket]?.min &&
-        current.event.price < BOOKINGS_BUCKETS[bucket]?.max
-      ) {
-        return prev + 1;
-      } else {
-        return prev;
-      }
-    }, 0);
+const BookingsChart = (props) => {
+  const chartRef = useRef(null); // Create a ref for the chart canvas element
 
-    output[bucket] = filteredBookingsCount;
-    console.log("output ===> ", output);
-  }
-  return <p>The Chart</p>;
+  useEffect(() => {
+    if (!chartRef.current) return;
+
+    const ctx = chartRef.current.getContext("2d");
+    if (!ctx) return;
+
+    const chartData = {
+      labels: [],
+      datasets: [],
+    };
+
+    let values = [];
+
+    for (const bucket in BOOKINGS_BUCKETS) {
+      const filteredBookingsCount = props.bookings.reduce((prev, current) => {
+        if (
+          current.event.price > BOOKINGS_BUCKETS[bucket]?.min &&
+          current.event.price < BOOKINGS_BUCKETS[bucket]?.max
+        ) {
+          return prev + 1;
+        } else {
+          return prev;
+        }
+      }, 0);
+
+      values.push(filteredBookingsCount);
+
+      chartData.labels.push(bucket);
+      chartData.datasets.push({
+        // label: bucket,
+        fillColor: "rgba(220,220,220,0.5)",
+        strokeColor: "rgba(220,220,220,0.8)",
+        highlightFill: "rgba(220,220,220,0.75)",
+        highlightStroke: "rgba(220,220,220,1)",
+        data: values,
+      });
+
+      values = [...values];
+      values[values.length - 1] = 0;
+    }
+
+    new Chart(ctx).Bar(chartData); // Create a new Bar chart using Chart.js version 1.x
+  }, [props.bookings]);
+
+  return (
+    <div className="chart_div">
+      <canvas ref={chartRef} />
+    </div>
+  );
 };
 
-export default bookingsChart;
+export default BookingsChart;
