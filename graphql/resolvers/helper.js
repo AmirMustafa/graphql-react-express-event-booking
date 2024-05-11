@@ -30,6 +30,13 @@ const transformBooking = (booking) => {
 const events = async (eventIds) => {
   try {
     const events = await Event.find({ _id: { $in: eventIds } });
+
+    events.sort((a, b) => {
+      return eventIds.indexOf(
+        a._id.toString() - eventIds.indexOf(b._id.toString())
+      );
+    });
+
     const eventsMap = {};
     events.forEach((event) => {
       eventsMap[event._id.toString()] = transformEvent(event);
