@@ -4,6 +4,8 @@ A GraphQL API-powered event booking system built with Node.js and Express.js, Re
 
 Users can create, book, and visualize events via bar charts using GraphQL APIs. Let us understand and explore the project from UI, Postman, and code, ensuring seamless frontend-backend connectivity. Stay updated with the latest 2024 GraphQL standards.
 
+Please leave a star if you like it
+
 ## Video
 https://www.youtube.com/watch?v=luCO1dwipY8
 
